@@ -22,6 +22,14 @@ module.exports = buildSchema(`
         speakers: [String!]
     }
 
+    type Speaker {
+        name: String!
+        age: Float!
+        expertise: [String!]!
+        nationality: String!
+        avatar: String
+    }
+
     input UserInput {
         email: String!
         password: String!
