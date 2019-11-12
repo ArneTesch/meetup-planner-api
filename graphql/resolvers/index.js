@@ -1,7 +1,9 @@
 const authResolver = require("./auth");
+const meetupResolver = require("./meetup");
 
 const rootResolver = {
-  ...authResolver
+  ...authResolver,
+  ...meetupResolver
 };
 
 module.exports = rootResolver;
