@@ -26,9 +26,15 @@ module.exports = buildSchema(`
         _id: ID!
         name: String!
         age: Float!
-        expertise: [String!]!
         nationality: String!
+        expertise: Expertise!
         avatar: String
+    }
+
+    type Expertise {
+        _id: ID!
+        title: String!
+        domain: String!
     }
 
     input UserInput {
@@ -41,16 +47,33 @@ module.exports = buildSchema(`
         description: String!
         date: String!
         location: String!
+        speakers: [ID!]
+    }
+
+    input SpeakerInput {
+        name: String!
+        age: Float!
+        expertise: ID!
+        nationality: String!
+        avatar: String
+    }
+
+    input ExpertiseInput {
+        title: String!
+        domain: String!
     }
 
     type RootQuery {
         meetups: [Meetup!]!
+        expertises: [Expertise!]!
         login(email: String!, password: String!): AuthData!
     }
 
     type RootMutation {
         createUser(userInput: UserInput): User
         createMeetup(meetupInput: MeetupInput): Meetup
+        createSpeaker(speakerInput: SpeakerInput): Speaker
+        createExpertise(expertiseInput: ExpertiseInput): Expertise
     }
 
     schema {

@@ -3,27 +3,33 @@ const Meetup = require("../../mongoose/models/meetup");
 module.exports = {
   meetups: async () => {
     try {
-      const meetups = await Meetup.find();
-      return meetups;
+      let populatedMeetup;
+      await Meetup.find()
+        .populate("speakers")
+        .exec()
+        .then(result => {
+          populatedMeetup = result;
+        });
+      return populatedMeetup;
     } catch (error) {
       throw error;
     }
   },
   createMeetup: async args => {
-    const { title, description, date, location } = args.meetupInput;
+    const { title, description, date, location, speakers } = args.meetupInput;
 
-    const meetup = new Meetup({
+    const newMeetup = new Meetup({
       title,
       description,
       date,
-      location
+      location,
+      speakers
     });
 
     try {
-      const result = await meetup.save();
-      return {
-        ...result._doc
-      };
+      return await newMeetup
+        .save()
+        .then(meetup => meetup.populate("speakers").execPopulate());
     } catch (error) {
       throw error;
     }
