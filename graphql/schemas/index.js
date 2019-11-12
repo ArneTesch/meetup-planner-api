@@ -19,10 +19,11 @@ module.exports = buildSchema(`
         description: String!
         date: String!
         location: String!
-        speakers: [String!]
+        speakers: [Speaker!]
     }
 
     type Speaker {
+        _id: ID!
         name: String!
         age: Float!
         expertise: [String!]!
@@ -40,7 +41,6 @@ module.exports = buildSchema(`
         description: String!
         date: String!
         location: String!
-        speakers: [String!]
     }
 
     type RootQuery {

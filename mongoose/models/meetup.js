@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.schema;
+const Schema = mongoose.Schema;
 
 const meetupSchema = new Schema({
   title: {
@@ -18,8 +18,12 @@ const meetupSchema = new Schema({
     type: String,
     required: true
   },
-  title: {
-    type: String,
-    required: true
-  }
+  speakers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Speaker"
+    }
+  ]
 });
+
+module.exports = mongoose.model("Meetup", meetupSchema);
