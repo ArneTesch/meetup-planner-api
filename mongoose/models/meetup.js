@@ -18,6 +18,12 @@ const meetupSchema = new Schema({
     type: String,
     required: true
   },
+  visitors: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Visitor"
+    }
+  ],
   speakers: [
     {
       type: Schema.Types.ObjectId,

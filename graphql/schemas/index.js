@@ -4,10 +4,16 @@ module.exports = buildSchema(`
     type User {
         _id: ID!
         email: String!
-        password: String!
+        password: String
     }
 
     type AuthData {
+        userId: ID!
+        token: String!
+        tokenExpiration: String!
+    }
+
+    type RegisterData {
         userId: ID!
         token: String!
         tokenExpiration: String!
@@ -20,6 +26,7 @@ module.exports = buildSchema(`
         date: String!
         location: String!
         speakers: [Speaker!]
+        visitors: [Visitor!]
     }
 
     type Speaker {
@@ -35,6 +42,15 @@ module.exports = buildSchema(`
         _id: ID!
         title: String!
         domain: String!
+    }
+
+    type Visitor {
+        _id: ID!
+        lastName: String!
+        firstname: String!
+        email: String!
+        password: String
+        meetups: [Meetup!]
     }
 
     input UserInput {
@@ -63,17 +79,29 @@ module.exports = buildSchema(`
         domain: String!
     }
 
+    input VisitorInput {
+        lastName: String!
+        firstname: String!
+        email: String!
+        password: String!
+        meetups: [ID!]
+    }
+
     type RootQuery {
         meetups: [Meetup!]!
         expertises: [Expertise!]!
-        login(email: String!, password: String!): AuthData!
+        visitors: [Visitor!]!
+        adminLogin(email: String!, password: String!): AuthData!
+        visitorLogin(email: String!, password: String!): AuthData!
     }
 
     type RootMutation {
-        createUser(userInput: UserInput): User
+        createUser(userInput: UserInput): AuthData
         createMeetup(meetupInput: MeetupInput): Meetup
         createSpeaker(speakerInput: SpeakerInput): Speaker
         createExpertise(expertiseInput: ExpertiseInput): Expertise
+        createVisitor(visitorInput: VisitorInput): Visitor
+        bookMeetup(meetupId: ID!): Meetup
     }
 
     schema {

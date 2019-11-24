@@ -1,11 +1,14 @@
 const Meetup = require("../../mongoose/models/meetup");
+const Visitor = require("../../mongoose/models/visitor");
+const mongoose = require("mongoose");
 
 module.exports = {
   meetups: async () => {
     try {
       let populatedMeetup;
       await Meetup.find()
-        .populate("speakers")
+        .populate({ path: "speakers", populate: { path: "expertise" } })
+        .populate("visitors")
         .exec()
         .then(result => {
           populatedMeetup = result;
@@ -33,5 +36,18 @@ module.exports = {
     } catch (error) {
       throw error;
     }
+  },
+  bookMeetup: async (args, req) => {
+    const { meetupId } = args;
+    // check if meetup already contains visitorId in array
+    // update visitor document >> meetups[meetupId]
+    // const visitorId = req.visitorId
+    return await Meetup.findByIdAndUpdate(
+      meetupId,
+      { $push: { visitors: "5dcc29af8ad54033ea0b9221" } },
+      { safe: true }
+    ).catch(err => {
+      throw new Error(err);
+    });
   }
 };

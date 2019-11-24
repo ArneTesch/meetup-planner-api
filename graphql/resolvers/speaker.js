@@ -13,7 +13,7 @@ module.exports = {
 
       return populatedSpeaker;
     } catch (error) {
-      throw new Error("Failed to fetch speakers", error);
+      throw new Error("Failed to fetch speakers:: ", error);
     }
   },
   createSpeaker: async args => {
@@ -32,7 +32,7 @@ module.exports = {
         .save()
         .then(speaker => speaker.populate("expertise").execPopulate());
     } catch (error) {
-      throw ("Failed to create speaker ", error);
+      throw ("Failed to create speaker:: ", error);
     }
   }
 };

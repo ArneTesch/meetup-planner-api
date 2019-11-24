@@ -1,4 +1,5 @@
 const User = require("../../mongoose/models/user");
+const Visitor = require("../../mongoose/models/visitor");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -16,6 +17,47 @@ module.exports = {
         password: hashedPassword
       });
       const result = await user.save();
+      const newUser = await User.findOne({ email: result._doc.email });
+      const token = jwt.sign(
+        {
+          userId: newUser._doc._id,
+          email: newUser._doc.email,
+          isAdmin: true
+        },
+        process.env.PRIVATE_KEY,
+        {
+          expiresIn: "1h"
+        }
+      );
+
+      return {
+        userId: newUser._doc._id,
+        token,
+        tokenExpiration: 1
+      };
+    } catch (error) {
+      throw error;
+    }
+  },
+  createVisitor: async args => {
+    const { lastName, firstname, email, password, meetups } = args.visitorInput;
+
+    try {
+      const existingVisitor = await Visitor.findOne({ email: email });
+      if (existingVisitor) {
+        throw new Error("Visitor already exists");
+      }
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const newVisitor = new Visitor({
+        lastName,
+        firstname,
+        email,
+        password: hashedPassword,
+        meetups
+      });
+
+      const result = await newVisitor.save();
+
       return {
         ...result._doc,
         password: null
@@ -24,7 +66,7 @@ module.exports = {
       throw error;
     }
   },
-  login: async ({ email, password }) => {
+  adminLogin: async ({ email, password }) => {
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -39,7 +81,8 @@ module.exports = {
     const token = jwt.sign(
       {
         userId: user._id,
-        email: user.email
+        email: user.email,
+        isAdmin: true
       },
       process.env.PRIVATE_KEY,
       {
@@ -49,6 +92,36 @@ module.exports = {
 
     return {
       userId: user._id,
+      token,
+      tokenExpiration: 1
+    };
+  },
+  visitorLogin: async ({ email, password }) => {
+    const visitor = await Visitor.findOne({ email });
+
+    if (!visitor) {
+      throw new Error("Visitor does not exist");
+    }
+
+    const isEqualPass = bcrypt.compare(password, visitor.password);
+    if (!isEqualPass) {
+      throw new Error("Incorrect password");
+    }
+
+    const token = jwt.sign(
+      {
+        visitorId: visitor._id,
+        email: visitor.email,
+        isAdmin: false
+      },
+      process.env.PRIVATE_KEY,
+      {
+        expiresIn: "1h"
+      }
+    );
+
+    return {
+      vistorId: visitor._id,
       token,
       tokenExpiration: 1
     };
