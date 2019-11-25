@@ -17,11 +17,10 @@ module.exports = {
         password: hashedPassword
       });
       const result = await user.save();
-      const newUser = await User.findOne({ email: result._doc.email });
       const token = jwt.sign(
         {
-          userId: newUser._doc._id,
-          email: newUser._doc.email,
+          userId: result._doc._id,
+          email: result._doc.email,
           isAdmin: true
         },
         process.env.PRIVATE_KEY,
@@ -31,7 +30,7 @@ module.exports = {
       );
 
       return {
-        userId: newUser._doc._id,
+        userId: result._doc._id,
         token,
         tokenExpiration: 1
       };
