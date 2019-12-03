@@ -49,5 +49,14 @@ module.exports = {
     ).catch(err => {
       throw new Error(err);
     });
+  },
+  deleteMeetup: async (args, req) => {
+    try {
+      const meetup = await Meetup.findById(args.meetupId);
+      await Meetup.deleteOne({ _id: args.meetupId });
+      return meetup;
+    } catch (error) {
+      throw error;
+    }
   }
 };
