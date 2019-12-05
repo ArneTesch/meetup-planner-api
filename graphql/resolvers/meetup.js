@@ -58,5 +58,30 @@ module.exports = {
     } catch (error) {
       throw error;
     }
+  },
+  updateMeetup: async (args, req) => {
+    try {
+      let updateValue = {};
+      const {
+        _id,
+        title,
+        description,
+        date,
+        location,
+        speakers
+      } = args.updateMeetupInput;
+
+      if (title) updateValue.title = title;
+      if (description) updateValue.description = description;
+      if (date) updateValue.date = date;
+      if (location) updateValue.location = location;
+      if (speakers) updateValue.speakers = speakers;
+      const meetup = await Meetup.findOneAndUpdate({ _id: _id }, updateValue, {
+        new: true
+      })
+        .populate("speakers")
+        .exec();
+      return meetup;
+    } catch (error) {}
   }
 };

@@ -66,6 +66,15 @@ module.exports = buildSchema(`
         speakers: [ID!]
     }
 
+    input UpdateMeetupInput {
+        _id: ID!
+        title: String
+        description: String
+        date: String
+        location: String
+        speakers: [ID!]
+    }
+
     input SpeakerInput {
         name: String!
         age: Float!
@@ -100,6 +109,7 @@ module.exports = buildSchema(`
         createUser(userInput: UserInput): AuthData
         createMeetup(meetupInput: MeetupInput): Meetup
         deleteMeetup(meetupId: ID!): Meetup!
+        updateMeetup(updateMeetupInput: UpdateMeetupInput): Meetup
         createSpeaker(speakerInput: SpeakerInput): Speaker
         createExpertise(expertiseInput: ExpertiseInput): Expertise
         createVisitor(visitorInput: VisitorInput): Visitor
