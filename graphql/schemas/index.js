@@ -91,6 +91,7 @@ module.exports = buildSchema(`
         meetups: [Meetup!]!
         expertises: [Expertise!]!
         visitors: [Visitor!]!
+        speakers: [Speaker!]!
         adminLogin(email: String!, password: String!): AuthData!
         visitorLogin(email: String!, password: String!): AuthData!
     }
@@ -98,6 +99,7 @@ module.exports = buildSchema(`
     type RootMutation {
         createUser(userInput: UserInput): AuthData
         createMeetup(meetupInput: MeetupInput): Meetup
+        deleteMeetup(meetupId: ID!): Meetup!
         createSpeaker(speakerInput: SpeakerInput): Speaker
         createExpertise(expertiseInput: ExpertiseInput): Expertise
         createVisitor(visitorInput: VisitorInput): Visitor
