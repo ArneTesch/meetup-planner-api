@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
   let decodedToken;
 
   try {
-    docedToken = jwt.verify(token, process.env.PRIVATE_KEY);
+    decodedToken = jwt.verify(token, process.env.PRIVATE_KEY);
   } catch (error) {
     req.isAuth = false;
     return next();

@@ -97,6 +97,7 @@ module.exports = buildSchema(`
     }
 
     type RootQuery {
+        users: [User!]!
         meetups: [Meetup!]!
         expertises: [Expertise!]!
         visitors: [Visitor!]!

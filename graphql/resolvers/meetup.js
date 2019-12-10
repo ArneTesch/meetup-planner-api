@@ -1,9 +1,13 @@
 const Meetup = require("../../mongoose/models/meetup");
-const Visitor = require("../../mongoose/models/visitor");
-const mongoose = require("mongoose");
 
 module.exports = {
-  meetups: async () => {
+  meetups: async (args, req) => {
+    // console.log(req);
+
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated");
+    }
+
     try {
       let populatedMeetup;
       await Meetup.find()
@@ -18,7 +22,11 @@ module.exports = {
       throw error;
     }
   },
-  createMeetup: async args => {
+  createMeetup: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated");
+    }
+
     const { title, description, date, location, speakers } = args.meetupInput;
 
     const newMeetup = new Meetup({
@@ -51,6 +59,9 @@ module.exports = {
     });
   },
   deleteMeetup: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated");
+    }
     try {
       const meetup = await Meetup.findById(args.meetupId);
       await Meetup.deleteOne({ _id: args.meetupId });
@@ -60,6 +71,10 @@ module.exports = {
     }
   },
   updateMeetup: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated");
+    }
+
     try {
       let updateValue = {};
       const {
