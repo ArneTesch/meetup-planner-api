@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
   let decodedToken;
 
   try {
-    docedToken = jwt.verify(token, process.env.PRIVATE_KEY);
+    decodedToken = jwt.verify(token, process.env.PRIVATE_KEY);
   } catch (error) {
     req.isAuth = false;
     return next();
@@ -33,7 +33,7 @@ module.exports = (req, res, next) => {
   if (decodedToken.isAdmin) {
     req.userId = decodedToken.userId;
   } else {
-    req.vistorId = docedToken.vistorId;
+    req.visitorId = decodedToken.visitorId;
   }
 
   next();
