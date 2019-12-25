@@ -33,7 +33,7 @@ module.exports = (req, res, next) => {
   if (decodedToken.isAdmin) {
     req.userId = decodedToken.userId;
   } else {
-    req.vistorId = docedToken.vistorId;
+    req.visitorId = decodedToken.visitorId;
   }
 
   next();

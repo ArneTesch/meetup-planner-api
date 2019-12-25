@@ -13,6 +13,12 @@ module.exports = buildSchema(`
         tokenExpiration: String!
     }
 
+    type VisitorAuthData {
+        visitorId: ID!
+        token: String!
+        tokenExpiration: String!
+    }
+
     type RegisterData {
         userId: ID!
         token: String!
@@ -103,7 +109,7 @@ module.exports = buildSchema(`
         visitors: [Visitor!]!
         speakers: [Speaker!]!
         adminLogin(email: String!, password: String!): AuthData!
-        visitorLogin(email: String!, password: String!): AuthData!
+        visitorLogin(email: String!, password: String!): VisitorAuthData!
     }
 
     type RootMutation {

@@ -120,7 +120,7 @@ module.exports = {
     );
 
     return {
-      vistorId: visitor._id,
+      visitorId: visitor._id,
       token,
       tokenExpiration: 1
     };
