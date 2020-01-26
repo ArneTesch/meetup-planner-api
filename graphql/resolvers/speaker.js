@@ -1,7 +1,10 @@
 const Speaker = require("../../mongoose/models/speaker");
 
 module.exports = {
-  speakers: async () => {
+  speakers: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated");
+    }
     try {
       let populatedSpeaker;
       await Speaker.find()
