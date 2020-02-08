@@ -1,20 +1,25 @@
 const Speaker = require("../../mongoose/models/speaker");
+const Expertise = require("../../mongoose/models/expertise");
 
 module.exports = {
   speakers: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated");
-    }
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated");
+    // }
     try {
       let populatedSpeaker;
-      await Speaker.find()
-        .populate("expertise")
-        .exec()
-        .then(result => {
-          populatedSpeaker = result;
-        });
+      return await Speaker.find();
+      let expertise = await Expertise.find();
+      console.log(expertise);
+      console.log(speaker);
 
-      return populatedSpeaker;
+      // .populate("expertise")
+
+      // .then(result => {
+      //   populatedSpeaker = result;
+      // });
+
+      // return populatedSpeaker;
     } catch (error) {
       throw new Error("Failed to fetch speakers:: ", error);
     }
@@ -27,13 +32,14 @@ module.exports = {
       age,
       nationality,
       avatar,
-      expertise
+      expertise: {
+        title: expertise.title,
+        domain: expertise.domain
+      }
     });
 
     try {
-      return await newSpeaker
-        .save()
-        .then(speaker => speaker.populate("expertise").execPopulate());
+      return await newSpeaker.save();
     } catch (error) {
       throw ("Failed to create speaker:: ", error);
     }

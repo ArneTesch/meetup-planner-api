@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+// const expertiseSchema = require("./expertise").schema;
+
+const expertiseSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  domain: {
+    type: String,
+    required: true
+  }
+});
 
 const speakerSchema = new Schema({
   name: {
@@ -7,7 +19,7 @@ const speakerSchema = new Schema({
     required: true
   },
   age: {
-    type: Number,
+    type: Date,
     required: true
   },
   nationality: {
@@ -19,8 +31,8 @@ const speakerSchema = new Schema({
     required: false
   },
   expertise: {
-    type: Schema.Types.ObjectId,
-    ref: "Expertise"
+    type: expertiseSchema,
+    required: true
   },
   meetups: [
     {

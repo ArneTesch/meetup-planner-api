@@ -38,7 +38,7 @@ module.exports = buildSchema(`
     type Speaker {
         _id: ID!
         name: String!
-        age: Float!
+        age: String!
         nationality: String!
         expertise: Expertise!
         avatar: String
@@ -83,8 +83,8 @@ module.exports = buildSchema(`
 
     input SpeakerInput {
         name: String!
-        age: Float!
-        expertise: ID!
+        age: String!
+        expertise: ExpertiseInput!
         nationality: String!
         avatar: String
     }

@@ -11,7 +11,7 @@ module.exports = {
     try {
       let populatedMeetup;
       await Meetup.find()
-        .populate({ path: "speakers", populate: { path: "expertise" } })
+        .populate({ path: "speakers" })
         .populate("visitors")
         .exec()
         .then(result => {
